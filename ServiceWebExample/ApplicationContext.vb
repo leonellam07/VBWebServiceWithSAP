@@ -13,6 +13,14 @@ Public Class ApplicationContext
     Private Property Password As String 'Password de SAP 
     Private Property TrustedFlag As String 'Colocar servidor de Confianza
 
+    Private _ErrorLog As String
+
+    Public Function GetErrorLog() As String
+        Return String.Format("Error ({0}): {1}", SBOCompany.GetLastErrorCode, SBOCompany.GetLastErrorDescription)
+    End Function
+
+
+
     Public Sub New()
         DistribucionSQL = ConfigurationManager.AppSettings("DistributationSQL")
         Server = ConfigurationManager.AppSettings("Server")

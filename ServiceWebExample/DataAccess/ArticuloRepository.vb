@@ -16,19 +16,18 @@ Public Class ArticuloRepository
             End If
 
             Dim idArticulo As String = String.Empty
-            Dim articulo As Articulo
-            Dim contador As Integer = 0
+            Dim articulo As Articulo = New Articulo
+            Dim primerRegistro As Boolean = True
 
             While recordset.EoF = False
 
-                If (contador = 0) Then
-                    articulo = New Articulo
+                If (primerRegistro = True) Then
                     articulo.Id = recordset.Fields.Item("ItemCode").Value
                     articulo.Nombre = recordset.Fields.Item("ItemName").Value
-
                     articulos.Add(articulo)
-                    idArticulo = articulo.Id
 
+                    idArticulo = articulo.Id
+                    primerRegistro = False
                 End If
 
                 Dim idArticuloNuevo = recordset.Fields.Item("ItemCode").Value
@@ -50,13 +49,38 @@ Public Class ArticuloRepository
                 }
 
                 articulo.Almacenes.Add(almacen)
-
-                contador = contador + 1
                 recordset.MoveNext()
             End While
 
         End Using
 
         Return articulos
+    End Function
+
+    Public Function Add(ByVal articulo As Articulo) As Articulo
+        Using db As ApplicationContext = New ApplicationContext()
+
+            Dim nuevoArticulo As Items = CType(db.SBOCompany.GetBusinessObject(BoObjectTypes.oItems), Items)
+
+            If (db.SBOCompany.InTransaction) Then
+                db.SBOCompany.EndTransaction(BoWfTransOpt.wf_RollBack)
+            End If
+
+            db.SBOCompany.StartTransaction()
+
+            nuevoArticulo.ItemName = articulo.Nombre
+            nuevoArticulo.ItemType = ItemTypeEnum.itItems
+            nuevoArticulo.Series = 71 'Para repuestos
+            nuevoArticulo.ItemsGroupCode = 110 'Para Inventario
+
+            If (nuevoArticulo.Add() <> 0) Then
+                Throw New Exception(db.GetErrorLog())
+            End If
+
+            db.SBOCompany.EndTransaction(BoWfTransOpt.wf_Commit)
+            articulo.Id = db.SBOCompany.GetNewObjectKey()
+
+            Return articulo
+        End Using
     End Function
 End Class
