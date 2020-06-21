@@ -34,7 +34,6 @@ Namespace Controllers
             Return ResponseMessage(response)
         End Function
 
-
         <HttpPost>
         <Route("AlmacenesTucan/Articulos")>
         Public Function Add(<FromBody> ByVal articulo As Articulo) As IHttpActionResult

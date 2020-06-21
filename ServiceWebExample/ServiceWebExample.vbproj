@@ -187,11 +187,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.vb" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.vb" />
     <Compile Include="Controllers\ArticuloController.vb" />
+    <Compile Include="Controllers\FacturaController.vb" />
+    <Compile Include="Controllers\ViajeController.vb" />
     <Compile Include="DataAccess\ArticuloRepository.vb" />
+    <Compile Include="DataAccess\FacturaRepository.vb" />
+    <Compile Include="DataAccess\ViajeRepository.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Articulo.vb" />
+    <Compile Include="Models\Factura.vb" />
+    <Compile Include="Models\Viaje.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
